@@ -1,9 +1,10 @@
 package platzi.play.plataforma;
 
+import platzi.play.contenido.Contenido;
 import platzi.play.contenido.Genero;
-import platzi.play.contenido.Pelicula;
 import platzi.play.contenido.ResumenContenido;
 import platzi.play.excepcion.PeliculaExistenteException;
+import platzi.play.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,9 +15,9 @@ import java.util.Map;
 public class Plataforma {
     /** clase15 - Listas **/
     private String nombre;
-    private List<Pelicula> contenido;
+    private List<Contenido> contenido;
     /*** clase 24 Map - permite almacer datos clave/valor */
-    private Map<Pelicula, Integer> visualizaciones; 
+    private Map<Contenido, Integer> visualizaciones;
 
     public Plataforma(String nombre) {
         this.nombre = nombre;
@@ -24,16 +25,17 @@ public class Plataforma {
         this.visualizaciones = new HashMap<>();
     }
 
-    public void agregar(Pelicula elemento) {
-        Pelicula contenido = this.buscarPorTitulo(elemento.getTitulo());
+    public void agregar(Contenido elemento) {
+        Contenido contenido = this.buscarPorTitulo(elemento.getTitulo());
 
         if (contenido != null) {
             throw new PeliculaExistenteException(elemento.getTitulo());
         }
+        FileUtils.escribirContenido(elemento);
         this.contenido.add(elemento);
     }
 
-    public void reproducir(Pelicula contenido) {
+    public void reproducir(Contenido contenido) {
         int conteoActual = visualizaciones.getOrDefault(contenido, 0);
 
         System.out.println(contenido.getTitulo() + "ha sido reproducido " + conteoActual + " veces.");
@@ -43,7 +45,7 @@ public class Plataforma {
         contenido.reproducir();
     }
 
-    private void contarVisualizaciones(Pelicula contenido) {
+    private void contarVisualizaciones(Contenido contenido) {
         int conteoActual = visualizaciones.getOrDefault(contenido, 0);
         visualizaciones.put(contenido, conteoActual + 1);
     }
@@ -51,7 +53,7 @@ public class Plataforma {
     /* clase19 - streams y lambdas */
     // lambdas: forma corta de escribir un metodo
     public List<String> getTitulos () {
-        //for (Pelicula pelicula : contenido) {
+        //for (Contenido pelicula : contenido) {
         //    System.out.println(pelicula.getTitulo());
         //}
 
@@ -60,7 +62,7 @@ public class Plataforma {
         // usando streams
         // return contenido.stream().map(contenido -> contenido.getTitulo());
         // otra forma de hacerlo - metodo de referencia: s llama directamente de la clase
-        return contenido.stream().map(Pelicula::getTitulo).toList();
+        return contenido.stream().map(Contenido::getTitulo).toList();
     }
 
     public List<ResumenContenido> getResumenes() {
@@ -69,12 +71,12 @@ public class Plataforma {
                 .toList();
     }
 
-    public void eliminar(Pelicula elemento) {
+    public void eliminar(Contenido elemento) {
         this.contenido.remove(elemento);
     }
 
-    public Pelicula buscarPorTitulo(String titulo) {
-        /* for (Pelicula pelicula: contenido) {
+    public Contenido buscarPorTitulo(String titulo) {
+        /* for (Contenido pelicula: contenido) {
             if (pelicula.getTitulo().equalsIgnoreCase(titulo)) {
                 return pelicula;
             }
@@ -88,22 +90,22 @@ public class Plataforma {
         // return null;
     }
 
-    public List<Pelicula> buscarPorGenero(Genero genero) {
+    public List<Contenido> buscarPorGenero(Genero genero) {
         return contenido.stream()
                 .filter(contenido -> contenido.getGenero().equals(genero))
                 .toList();
     }
 
-    public List<Pelicula> getPopulares(int cantidad) {
+    public List<Contenido> getPopulares(int cantidad) {
         return contenido.stream()
-                .sorted(Comparator.comparingDouble(Pelicula::getCalificacion).reversed())
+                .sorted(Comparator.comparingDouble(Contenido::getCalificacion).reversed())
                 .limit(cantidad)
                 .toList();
     }
 
     public int getDuracionTotal () {
         return contenido.stream()
-                .mapToInt(Pelicula::getDuracion)
+                .mapToInt(Contenido::getDuracion)
                 .sum();
     }
 
@@ -111,7 +113,7 @@ public class Plataforma {
         return nombre;
     }
 
-    public List<Pelicula> getContenido() {
+    public List<Contenido> getContenido() {
         return contenido;
     }
 }
