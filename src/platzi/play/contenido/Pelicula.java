@@ -60,4 +60,8 @@ public class Pelicula {
     public double getCalificacion() {
         return calificacion;
     }
+
+    public void setFechaEstreno(LocalDate fechaEstreno) {
+        this.fechaEstreno = fechaEstreno;
+    }
 }
