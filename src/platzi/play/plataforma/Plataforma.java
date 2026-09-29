@@ -38,7 +38,7 @@ public class Plataforma {
     public void reproducir(Contenido contenido) {
         int conteoActual = visualizaciones.getOrDefault(contenido, 0);
 
-        System.out.println(contenido.getTitulo() + "ha sido reproducido " + conteoActual + " veces.");
+        System.out.println(contenido.getTitulo() + " ha sido reproducido " + conteoActual + " veces.");
 
         // visualizaciones.put(contenido, conteoActual + 1);
         this.contarVisualizaciones(contenido);
