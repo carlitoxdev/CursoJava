@@ -1,8 +1,6 @@
 package platzi.play.plataforma;
 
-import platzi.play.contenido.Contenido;
-import platzi.play.contenido.Genero;
-import platzi.play.contenido.ResumenContenido;
+import platzi.play.contenido.*;
 import platzi.play.excepcion.PeliculaExistenteException;
 import platzi.play.util.FileUtils;
 
@@ -100,6 +98,27 @@ public class Plataforma {
         return contenido.stream()
                 .sorted(Comparator.comparingDouble(Contenido::getCalificacion).reversed())
                 .limit(cantidad)
+                .toList();
+    }
+
+    public List<Pelicula> getPeliculas() {
+        return contenido.stream()
+                .filter(contenido -> contenido instanceof Pelicula)
+                .map(contenidoFiltrado -> (Pelicula) contenidoFiltrado)
+                .toList();
+    }
+
+    public List<Documental> getDocumental() {
+        return contenido.stream()
+                .filter(contenido -> contenido instanceof Documental)
+                .map(contenidoFiltrado -> (Documental) contenidoFiltrado)
+                .toList();
+    }
+
+    public List<Promocionable> getContenidoPromocionable() {
+        return contenido.stream()
+                .filter(contenido -> contenido instanceof Promocionable)
+                .map(contenidoProm -> (Promocionable) contenidoProm)
                 .toList();
     }
 

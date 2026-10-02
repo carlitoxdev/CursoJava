@@ -2,7 +2,7 @@ package platzi.play.contenido;
 
 import java.time.LocalDate;
 
-public class Contenido {
+public abstract class Contenido {
     // Definiendo atributos
     private String titulo;
     private String descripcion;
@@ -30,9 +30,11 @@ public class Contenido {
     // clase 9: casting
     // public int duracion;
 
-    public void reproducir () {
+    /* Clase 29 - Clases y Metodos Abstractos */
+    /* public void reproducir () {
         System.out.println("Reproduciendo " + titulo);
-    }
+    } */
+    public abstract void reproducir();
 
     public String obtenerFichaTecnica () {
         return titulo + " (" + fechaEstreno.getYear() + ")\n" +
